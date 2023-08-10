@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Mark's App</title>
+    <link href="/signup.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <main>
+      <h1>Signup</h1>
+        <form action="/signup" method="post">
+          <fieldset>
+             <input type="text" name="username" placeholder="username" id="username" required>
+            </fieldset>
+          <fieldset>
+          <input type="password" name="password" placeholder="Password" id="password" required>
+          </fieldset>
+          <button type="submit">Sign up</button>
+        </form>
+        {% if error_message1 %}
+        <p style="color: red;">{{ error_message1 }}</p>
+        {% endif %}
+      </section>
+    </main>
+    <footer>
+      <p>
+       Copyright - <a href="https://www.freecodecamp.org">Mark's Website Privacy Policy</a>
+      </p>
+    </footer>
+  </body>
+</html>
