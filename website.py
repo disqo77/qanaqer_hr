@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
+#barev dzez
+
 ifloggedin = False
 currentLogin = " "
 username = " "
