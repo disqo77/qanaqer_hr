@@ -7,9 +7,7 @@ currentLogin = " "
 username = " "
 passwordsDic= { }
 skillsDic = { }
-#testSkills=[]
-#adminSkills=[]
-#userSkills=[]
+
 
 @app.route('/')
 def index():
@@ -27,6 +25,7 @@ def getSignup():
 def postSignup():
     global ifloggedin
     global passwordsDic
+    global skillsDic
     global currentLogin
 
     userSignup = request.form['username']
@@ -62,17 +61,18 @@ def postLogin():
 @app.route('/profile')
 def profile():
     global ifloggedin
+    global skillsDic
     global currentLogin
     if not ifloggedin:
         return redirect('/')
     else:
-        skillsDic[currentLogin] = [skills]
-        return render_template('profile.html', username=currentLogin, skills=skills) 
+        return render_template('profile.html', username=currentLogin, skills = skillsDic[currentLogin]) 
        
 
 @app.route('/addSkill', methods=['POST'])
 def addSkill():
     global currentLogin
+    global skillsDic
     skill = request.form['skill']
     s = skillsDic[currentLogin]
     s.append(skill)
