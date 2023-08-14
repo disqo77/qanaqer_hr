@@ -38,7 +38,7 @@ def postSignup():
          ifloggedin = True
          currentLogin = userSignup
          skillsDic[currentLogin] = []
-         return render_template("profile.html", username=currentLogin)
+         return render_template("profile.html", username=currentLogin, password=userPass)
 
 @app.route('/login')
 def getLogin():
@@ -77,6 +77,17 @@ def addSkill():
     s = skillsDic[currentLogin]
     s.append(skill)
     return redirect('/profile')
+
+@app.route('/settings')
+def getsettings():
+          return render_template('settings.html')
+
+@app.route('/settings', methods=['POST'])
+def settings():
+    global currentLogin
+    global skillsDic
+    global passwordsDic
+    return redirect('/settings')
 
 @app.route('/logout', methods=['POST'])
 def logout():
