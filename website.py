@@ -28,6 +28,7 @@ def postSignup():
     global passwordsDic
     global skillsDic
     global currentLogin
+    global currentPass
 
     userSignup = request.form['username']
     userPass = request.form['password']
@@ -50,6 +51,7 @@ def getLogin():
 def postLogin():
     global ifloggedin
     global currentLogin
+    global currentPass
     userLogin = request.form['login']
     userPass = request.form['password']
 
@@ -98,14 +100,19 @@ def passreset():
     global currentLogin
     global skillsDic
     global passwordsDic
+    global currentPass
     currpass = request.form['currpass']
     newpass = request.form['newpass']
     confnewpass = request.form['confnewpass']
-    if passwordsDic[currentLogin] == currpass and newpass == confnewpass:
+    if passwordsDic[currentLogin] == currpass and newpass == confnewpass and currpass != newpass:
          passwordsDic[currentLogin] = confnewpass
-         return redirect('/settings')
+         return render_template('settings.html', pass_message= "Password changed succesfully")
     else:
-         return render_template("settings.html", error_message2 = "Duq mutqagrel eq sxal gaxtnabar kam nman account arka che")
+         return render_template('settings.html', passerror_message= "Please retry") 
+
+@app.route('/back', methods=['POST'])
+def back():
+     return redirect('/profile')
 
 @app.route('/logout', methods=['POST'])
 def logout():

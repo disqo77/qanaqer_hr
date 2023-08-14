@@ -9,6 +9,9 @@
 <body>
   <div>
     <main>
+        <form action="/back", method="post">
+            <button type="submit">Back to Homepage</button>
+        </form>
       <h1>Settings</h1>
       <h2>Reset Password</h2>
       {% if username %}
@@ -17,7 +20,7 @@
       {% if password %}
       <p style="color: black;">{{ password }}</p>
       {% endif %}       
-      <form action="/settings", method="post">
+      <form action="/passreset", method="post">
         <div class="form-group">
         <label for="">Current Password</label>
         <input type="text" class="form-control" name="currpass" required></input>
@@ -28,8 +31,11 @@
         </div>
         <input type="Submit" value="Change Password"></input>
     </form>
-    {% if error_message2 %}
-    <p style="color: red;">{{ error_message2 }}</p>
+    {% if pass_message %}
+    <p style="color: red;">{{ pass_message }}</p>
+    {% endif %}
+    {% if passerror_message %}
+    <p style="color: red;">{{ passerror_message }}</p>
     {% endif %}
     <footer>
       <p>
