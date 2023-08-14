@@ -90,7 +90,7 @@ def settings():
     userSignup = request.form['username']
     userPass = request.form['password']
     currentLogin = userSignup
-    return render_template("settings.html", username=currentLogin, password=userPass)
+    return redirect("/settings", username=currentLogin, password=userPass)
 
 @app.route('/logout', methods=['POST'])
 def logout():
