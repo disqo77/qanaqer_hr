@@ -87,7 +87,10 @@ def settings():
     global currentLogin
     global skillsDic
     global passwordsDic
-    return redirect('/settings')
+    userSignup = request.form['username']
+    userPass = request.form['password']
+    currentLogin = userSignup
+    return render_template("settings.html", username=currentLogin, password=userPass)
 
 @app.route('/logout', methods=['POST'])
 def logout():
