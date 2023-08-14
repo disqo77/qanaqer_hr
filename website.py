@@ -88,9 +88,8 @@ def settings():
     global skillsDic
     global passwordsDic
     userSignup = request.form['username']
-    userPass = request.form['password']
     currentLogin = userSignup
-    return redirect("/settings", username=currentLogin, password=userPass)
+    return redirect('/settings')
 
 @app.route('/logout', methods=['POST'])
 def logout():
