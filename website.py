@@ -5,6 +5,7 @@ app = Flask(__name__, static_url_path='', static_folder='static')
 ifloggedin = False
 currentLogin = " "
 username = " "
+currentPass = " "
 passwordsDic= { }
 skillsDic = { }
 
@@ -37,6 +38,7 @@ def postSignup():
          passwordsDic[userSignup] = userPass
          ifloggedin = True
          currentLogin = userSignup
+         currentPass = userPass
          skillsDic[currentLogin] = []
          return render_template("profile.html", username=currentLogin, password=userPass)
 
@@ -54,6 +56,7 @@ def postLogin():
     if userLogin in passwordsDic and passwordsDic[userLogin] == userPass:
         ifloggedin = True
         currentLogin = userLogin
+        currentPass = userPass
         return redirect('/profile')
     else:
         return render_template("login.html", error_message="Duq mutqagrel eq sxal gaxtnabar kam nman account arka che")
@@ -87,9 +90,22 @@ def settings():
     global currentLogin
     global skillsDic
     global passwordsDic
-    userSignup = request.form['username']
-    currentLogin = userSignup
+    
     return redirect('/settings')
+
+@app.route('/passreset', methods=['POST'])
+def passreset():
+    global currentLogin
+    global skillsDic
+    global passwordsDic
+    currpass = request.form['currpass']
+    newpass = request.form['newpass']
+    confnewpass = request.form['confnewpass']
+    if passwordsDic[currentLogin] == currpass and newpass == confnewpass:
+         passwordsDic[currentLogin] = confnewpass
+         return redirect('/settings')
+    else:
+         return render_template("settings.html", error_message2 = "Duq mutqagrel eq sxal gaxtnabar kam nman account arka che")
 
 @app.route('/logout', methods=['POST'])
 def logout():

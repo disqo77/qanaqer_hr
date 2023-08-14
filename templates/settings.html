@@ -10,7 +10,7 @@
   <div>
     <main>
       <h1>Settings</h1>
-      <h2>Username</h2>
+      <h2>Reset Password</h2>
       {% if username %}
       <p style="color: black;">{{ username }}</p>
       {% endif %}
@@ -18,7 +18,6 @@
       <p style="color: black;">{{ password }}</p>
       {% endif %}       
       <form action="/settings", method="post">
-        <label>Reset Password</label>
         <div class="form-group">
         <label for="">Current Password</label>
         <input type="text" class="form-control" name="currpass" required></input>
@@ -29,6 +28,9 @@
         </div>
         <input type="Submit" value="Change Password"></input>
     </form>
+    {% if error_message2 %}
+    <p style="color: red;">{{ error_message2 }}</p>
+    {% endif %}
     <footer>
       <p>
         <a href="https://www.freecodecamp.org" target="_blank">Visit our website</a>
