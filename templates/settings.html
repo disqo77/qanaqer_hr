@@ -9,9 +9,7 @@
 <body>
   <div>
     <main>
-        <form action="/back", method="post">
-            <button type="submit">Back to Homepage</button>
-        </form>
+        <a href="/profile"> <button>Back To Homepage</button> </a>
       <h1>Settings</h1>
       <h2>Reset Password</h2>
       {% if username %}
@@ -32,7 +30,7 @@
         <input type="Submit" value="Change Password"></input>
     </form>
     {% if pass_message %}
-    <p style="color: red;">{{ pass_message }}</p>
+    <p style="color: green;">{{ pass_message }}</p>
     {% endif %}
     {% if passerror_message %}
     <p style="color: red;">{{ passerror_message }}</p>

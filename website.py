@@ -1,19 +1,21 @@
 from flask import Flask, render_template, request, redirect
 
+class User:
+     def __init__(self, username, password, isAdmin, skills):
+          self.username = username
+          self.password = password
+          self.isAdmin = isAdmin
+          self.skills = skills
+
 app = Flask(__name__, static_url_path='', static_folder='static')
 
-ifloggedin = False
-currentLogin = " "
-username = " "
-currentPass = " "
-passwordsDic= { }
-skillsDic = { }
+currentUser = None
+userDic = { 'admin': User('admin', 'admin', True, []), 'test': User('test', 'test', True, []) }
 
 
 @app.route('/')
 def index():
-     global ifloggedin
-     if ifloggedin:
+     if currentUser != None:
           return redirect('/profile')
      else:
           return render_template('login.html')
@@ -24,24 +26,18 @@ def getSignup():
 
 @app.route('/signup', methods=['POST'])
 def postSignup():
-    global ifloggedin
-    global passwordsDic
-    global skillsDic
-    global currentLogin
-    global currentPass
+    global currentUser
+    global userDic
+    username = request.form['username']
+    password = request.form['password']
 
-    userSignup = request.form['username']
-    userPass = request.form['password']
-
-    if userSignup in passwordsDic:
+    if username in userDic:
          return render_template("signup.html", error_message1="Username already in use")
     else:
-         passwordsDic[userSignup] = userPass
-         ifloggedin = True
-         currentLogin = userSignup
-         currentPass = userPass
-         skillsDic[currentLogin] = []
-         return render_template("profile.html", username=currentLogin, password=userPass)
+         newUser = User(username, password, False, [])
+         currentUser = newUser
+         userDic[username] = newUser
+         return render_template("profile.html", username=username, password=password)
 
 @app.route('/login')
 def getLogin():
@@ -49,37 +45,33 @@ def getLogin():
 
 @app.route('/login', methods=['POST'])
 def postLogin():
-    global ifloggedin
-    global currentLogin
-    global currentPass
-    userLogin = request.form['login']
-    userPass = request.form['password']
+    global currentUser
+    global userDic
+    username = request.form['login']
+    password = request.form['password']
 
-    if userLogin in passwordsDic and passwordsDic[userLogin] == userPass:
-        ifloggedin = True
-        currentLogin = userLogin
-        currentPass = userPass
+    if username in userDic and userDic[username].password == password:
         return redirect('/profile')
     else:
         return render_template("login.html", error_message="Duq mutqagrel eq sxal gaxtnabar kam nman account arka che")
     
 @app.route('/profile')
 def profile():
-    global ifloggedin
-    global skillsDic
-    global currentLogin
-    if not ifloggedin:
+    global currentUser
+    global userDic
+    if currentUser == None:
         return redirect('/')
     else:
-        return render_template('profile.html', username=currentLogin, skills = skillsDic[currentLogin]) 
+        return render_template('profile.html', username=userDic[currentUser.username], skills = userDic[currentUser.skills]) 
        
 
 @app.route('/addSkill', methods=['POST'])
 def addSkill():
-    global currentLogin
-    global skillsDic
+    global currentUser
+    global userDic
+    currentUser = User(username, password, False, [])
     skill = request.form['skill']
-    s = skillsDic[currentLogin]
+    s = userDic[currentUser.skills]
     s.append(skill)
     return redirect('/profile')
 
@@ -110,15 +102,11 @@ def passreset():
     else:
          return render_template('settings.html', passerror_message= "Please retry") 
 
-@app.route('/back', methods=['POST'])
-def back():
-     return redirect('/profile')
-
 @app.route('/logout', methods=['POST'])
 def logout():
-    global ifloggedin
-
-    ifloggedin = False
+    global currentUser
+    global userDic
+    currentUser = None
     return redirect('/')
 
 if __name__ == '__main__':
