@@ -64,7 +64,7 @@ def profile():
     if currentUser == None:
         return redirect('/')
     else:
-        return render_template('profile.html', username=currentUser.username, skills = currentUser.skills) 
+        return render_template('profile.html', username=currentUser.username, skills=currentUser.skills) 
        
 
 @app.route('/addSkill', methods=['POST'])
@@ -104,7 +104,7 @@ def getadminka():
     global currentUser
     global userDic
     if currentUser.isAdmin == True:
-          return render_template('adminka.html') #user=currentUser.username 
+          return render_template('adminka.html', username=currentUser.username)
     else:
          return redirect('/profile')
     
@@ -113,7 +113,7 @@ def adminka():
     global currentUser
     global userDic
     if currentUser.isAdmin == True:
-          return render_template('adminka.html') #user=currentUser.username 
+          return render_template('adminka.html', username=currentUser.username) 
     else:
          return render_template('/profile')
     
