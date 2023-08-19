@@ -10,7 +10,7 @@ class User:
 app = Flask(__name__, static_url_path='', static_folder='static')
 
 currentUser = None
-userDic = { 'admin': User('admin', 'admin', True, []), 'test': User('test', 'test', True, []) }
+userDic = { 'admin': User('admin', 'admin', True, []), 'test': User('test', 'test', False, []) }
 
 
 @app.route('/')
@@ -101,13 +101,35 @@ def passreset():
     
 @app.route('/adminka')
 def getadminka():
-          return render_template('adminka.html')
-
-@app.route('/adminka', methods=['POST'])
-def settings():
     global currentUser
     global userDic
-    return redirect('/adminka')
+    if currentUser.isAdmin == True:
+          return render_template('adminka.html') #user=currentUser.username 
+    else:
+         return redirect('/profile')
+    
+@app.route('/adminka', methods=['POST'])
+def adminka():
+    global currentUser
+    global userDic
+    if currentUser.isAdmin == True:
+          return render_template('adminka.html') #user=currentUser.username 
+    else:
+         return render_template('/profile')
+    
+@app.route('/adminkapasschange', methods=['POST'])
+def adminkapasschange():
+    global currentUser
+    global userDic
+    currusername = request.form['currusername']
+    currpass = request.form['currpass']
+    newpass = request.form['newpass']
+    confnewpass = request.form['confnewpass']
+    if currentUser.isAdmin == True and currusername == userDic[currusername].username and currpass == userDic[currusername].password and newpass == confnewpass and currpass != newpass:
+        userDic[currusername].password = confnewpass
+        return render_template('adminka.html', pass_message= "Password changed succesfully")
+    else:
+         return render_template('adminka.html', passerror_message= "Please retry") 
   
 
 @app.route('/logout', methods=['POST'])
