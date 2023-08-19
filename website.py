@@ -99,25 +99,16 @@ def passreset():
     else:
          return render_template('settings.html', passerror_message= "Please retry") 
     
-app.route('/admin')
-def getadmmin():
-     if currentUser.isAdmin == True:
-          return redirect('/admin')
-     else:
-          return redirect('/profile')
+@app.route('/adminka')
+def getadminka():
+          return render_template('adminka.html')
 
-app.route('/admin', methods=['POST'])
-def admmin():
+@app.route('/adminka', methods=['POST'])
+def settings():
     global currentUser
     global userDic
-    currusername = request.form['currusername']
-    currpass = request.form['currpass']
-    newpass = request.form['newpass']
-    confnewpass = request.form['confnewpass']
-    if currentUser.isAdmin == True:
-         return render_template('admin.html', pass_message= "Password changed succesfully")
-    else:
-         return render_template('settings.html', passerror_message= "Please retry")
+    return redirect('/adminka')
+  
 
 @app.route('/logout', methods=['POST'])
 def logout():
