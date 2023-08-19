@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Mark's App</title>
+    <link href="/admin.css" rel="stylesheet"/>
+  </head>
+</head>
+<body>
+  <div>
+    <main>
+        <a href="/profile"> <button>Back To Homepage</button> </a>
+      <h1>Settings</h1>
+      <h2>Reset Password</h2>   
+      <form action="/passreset", method="post">
+        <div class="form-group">
+        <label for="">Username</label>
+        <input type="text" class="form-control" name="currusername" required></input>
+        <label for="">Current Password</label>
+        <input type="text" class="form-control" name="currpass" required></input>
+        <label for="">New Password</label>
+        <input type="text" class="form-control" name="newpass" required></input>
+        <label for="">Confirm New Password</label>
+        <input type="text" class="form-control" name="confnewpass" required></input>
+        </div>
+        <input type="Submit" value="Change Password"></input>
+    </form>
+    {% if pass_message %}
+    <p style="color: green;">{{ pass_message }}</p>
+    {% endif %}
+    {% if passerror_message %}
+    <p style="color: red;">{{ passerror_message }}</p>
+    {% endif %}
+    <footer>
+      <p>
+        <a href="https://www.freecodecamp.org" target="_blank">Visit our website</a>
+      </p>
+      <p class="address">123 Free Code Camp Drive</p>
+    </footer>
+  </div>
+</body>
+</html>

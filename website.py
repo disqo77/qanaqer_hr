@@ -35,8 +35,8 @@ def postSignup():
          return render_template("signup.html", error_message1="Username already in use")
     else:
          newUser = User(username, password, False, [])
-         currentUser = newUser
          userDic[username] = newUser
+         currentUser = userDic[username]
          return render_template("profile.html", username=username, password=password)
 
 @app.route('/login')
@@ -51,6 +51,7 @@ def postLogin():
     password = request.form['password']
 
     if username in userDic and userDic[username].password == password:
+        currentUser = userDic[username]
         return redirect('/profile')
     else:
         return render_template("login.html", error_message="Duq mutqagrel eq sxal gaxtnabar kam nman account arka che")
@@ -59,19 +60,19 @@ def postLogin():
 def profile():
     global currentUser
     global userDic
+    
     if currentUser == None:
         return redirect('/')
     else:
-        return render_template('profile.html', username=userDic[currentUser.username], skills = userDic[currentUser.skills]) 
+        return render_template('profile.html', username=currentUser.username, skills = currentUser.skills) 
        
 
 @app.route('/addSkill', methods=['POST'])
 def addSkill():
     global currentUser
     global userDic
-    currentUser = User(username, password, False, [])
     skill = request.form['skill']
-    s = userDic[currentUser.skills]
+    s = currentUser.skills
     s.append(skill)
     return redirect('/profile')
 
@@ -81,26 +82,42 @@ def getsettings():
 
 @app.route('/settings', methods=['POST'])
 def settings():
-    global currentLogin
-    global skillsDic
-    global passwordsDic
-    
+    global currentUser
+    global userDic
     return redirect('/settings')
 
 @app.route('/passreset', methods=['POST'])
 def passreset():
-    global currentLogin
-    global skillsDic
-    global passwordsDic
-    global currentPass
+    global currentUser
+    global userDic
     currpass = request.form['currpass']
     newpass = request.form['newpass']
     confnewpass = request.form['confnewpass']
-    if passwordsDic[currentLogin] == currpass and newpass == confnewpass and currpass != newpass:
-         passwordsDic[currentLogin] = confnewpass
+    if currentUser.password == currpass and newpass == confnewpass and currpass != newpass:
+         currentUser.password = confnewpass
          return render_template('settings.html', pass_message= "Password changed succesfully")
     else:
          return render_template('settings.html', passerror_message= "Please retry") 
+    
+app.route('/admin')
+def getadmmin():
+     if currentUser.isAdmin == True:
+          return redirect('/admin')
+     else:
+          return redirect('/profile')
+
+app.route('/admin', methods=['POST'])
+def admmin():
+    global currentUser
+    global userDic
+    currusername = request.form['currusername']
+    currpass = request.form['currpass']
+    newpass = request.form['newpass']
+    confnewpass = request.form['confnewpass']
+    if currentUser.isAdmin == True:
+         return render_template('admin.html', pass_message= "Password changed succesfully")
+    else:
+         return render_template('settings.html', passerror_message= "Please retry")
 
 @app.route('/logout', methods=['POST'])
 def logout():
