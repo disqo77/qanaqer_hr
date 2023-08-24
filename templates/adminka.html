@@ -31,6 +31,42 @@
     {% if passerror_message %}
     <p style="color: red;">{{ passerror_message }}</p>
     {% endif %}
+    <h2>Usernames</h2>
+    <table border="1">
+      <tr>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Is Admin</th>
+      </tr>
+      {% for user in usersList %}
+          <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ user.password }}</td>
+              <td>{{ 'Yes' if user.isAdmin else 'No' }}</td>
+          </tr>
+      {% endfor %}
+  </table>
+  <form action="/adminkaadduser", method="post">
+    <div class="form-group">
+    <label>Add New User</label>
+    <label for="">Username</label>
+    <input type="text" class="form-control" name="newusername" required></input>
+    <label for="">New Password</label>
+    <input type="text" class="form-control" name="newpassword" required></input>
+    <label for="isAdmin">Is the user an Admin?
+      <select id="isAdmin" name="isAdmin" required>
+        <option value="">(select one)</option>
+        <option value="True">Yes</option>
+        <option value="False">No</option>
+      </select>
+    </label>
+    </div>
+    <input type="Submit" value="Add User"></input>
+</form>
+{% if error_message_newUser %}
+    <p style="color: red;">{{ error_message_newUser }}</p>
+{% endif %}
+  </main>
     <footer>
       <p>
         <a href="https://www.freecodecamp.org" target="_blank">Visit our website</a>

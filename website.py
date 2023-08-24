@@ -12,7 +12,6 @@ app = Flask(__name__, static_url_path='', static_folder='static')
 currentUser = None
 userDic = { 'admin': User('admin', 'admin', True, []), 'test': User('test', 'test', False, []) }
 
-
 @app.route('/')
 def index():
      if currentUser != None:
@@ -103,8 +102,9 @@ def passreset():
 def getadminka():
     global currentUser
     global userDic
+    usersList = userDic.values()
     if currentUser.isAdmin == True:
-          return render_template('adminka.html', username=currentUser.username)
+          return render_template('adminka.html', usersList=usersList)
     else:
          return redirect('/profile')
     
@@ -113,7 +113,7 @@ def adminka():
     global currentUser
     global userDic
     if currentUser.isAdmin == True:
-          return render_template('adminka.html', username=currentUser.username) 
+          return render_template('adminka.html') 
     else:
          return render_template('/profile')
     
@@ -130,7 +130,23 @@ def adminkapasschange():
         return render_template('adminka.html', pass_message= "Password changed succesfully")
     else:
          return render_template('adminka.html', passerror_message= "Please retry") 
-  
+
+@app.route('/adminkaadduser', methods=['POST'])
+def adminkaadduser():
+    global currentUser
+    global userDic
+    userDic_list = list(userDic.values())
+    newUser = request.form['newusername']
+    newPass = request.form['newpassword']
+    isAdmin = request.form['isAdmin']
+    boolean_value = isAdmin == 'True'
+
+    if newUser in userDic:
+         return render_template("adminka.html", error_message_newUser="Username already in use", userDic_list=userDic_list)
+    else:
+         createUser = User(newUser, newPass, boolean_value, [])
+         userDic[newUser] = createUser
+         return redirect ('/adminka') 
 
 @app.route('/logout', methods=['POST'])
 def logout():
