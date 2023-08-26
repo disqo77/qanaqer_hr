@@ -37,12 +37,14 @@
           <th>Username</th>
           <th>Password</th>
           <th>Is Admin</th>
+          <th>Skills</th>
       </tr>
       {% for user in usersList %}
           <tr>
               <td>{{ user.username }}</td>
               <td>{{ user.password }}</td>
               <td>{{ 'Yes' if user.isAdmin else 'No' }}</td>
+              <td>{{ '' if user.skills|length == 0 else user.skills }}</td>
           </tr>
       {% endfor %}
   </table>
@@ -58,6 +60,17 @@
         <option value="">(select one)</option>
         <option value="True">Yes</option>
         <option value="False">No</option>
+      </select>
+    </label>
+    <label for="skills">What skills does the user have?
+      <select id="skills" name="skills" multiple required>
+        <option value="">(select skills that apply)</option>
+        <option value="Python">Python</option>
+        <option value="Javascript">Javascript</option>
+        <option value="CSS">CSS</option>
+        <option value="HTML">HTML</option>
+        <option value="C#">C#</option>
+        <option value="C++">C++</option>
       </select>
     </label>
     </div>

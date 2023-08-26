@@ -140,11 +140,12 @@ def adminkaadduser():
     newPass = request.form['newpassword']
     isAdmin = request.form['isAdmin']
     boolean_value = isAdmin == 'True'
+    selected_skills = request.form.getlist('skills')
 
     if newUser in userDic:
          return render_template("adminka.html", error_message_newUser="Username already in use", userDic_list=userDic_list)
     else:
-         createUser = User(newUser, newPass, boolean_value, [])
+         createUser = User(newUser, newPass, boolean_value, selected_skills)
          userDic[newUser] = createUser
          return redirect ('/adminka') 
 

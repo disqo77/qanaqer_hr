@@ -3,3 +3,8 @@ body {
     font-family: sans-serif;
     padding: 20px;
   }
+
+  input,
+select {
+  width: 100%;
+}
